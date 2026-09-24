@@ -1,0 +1,18 @@
+{
+  "scenario": "fee_declined",
+  "customer": {
+    "name": "William Moore",
+    "phone": "+1555010008",
+    "email": "william.moore@example.com"
+  },
+  "request": {
+    "service_type": "AC diagnostic",
+    "issue": "Customer needs a technician to diagnose an AC problem.",
+    "urgency": "normal",
+    "diagnostic_fee": "Customer does not agree to the diagnostic fee."
+  },
+  "expected_result": {
+    "status": "fee_declined",
+    "action": "explain_fee_policy_and_follow_business_rules"
+  }
+}

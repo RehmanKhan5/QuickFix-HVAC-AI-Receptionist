@@ -1,0 +1,20 @@
+{
+  "scenario": "tool_failure",
+  "customer": {
+    "name": "Test Customer",
+    "phone": "+1555010015",
+    "email": "test@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "The AC is not cooling."
+  },
+  "test_condition": {
+    "simulate_failure": true,
+    "failed_component": "Airtable"
+  },
+  "expected_result": {
+    "status": "tool_error",
+    "action": "provide_friendly_fallback_and_log_or_escalate_error"
+  }
+}

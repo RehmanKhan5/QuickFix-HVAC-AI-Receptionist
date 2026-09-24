@@ -1,0 +1,18 @@
+{
+  "scenario": "reschedule",
+  "customer": {
+    "name": "Daniel Martin",
+    "phone": "+1555010010",
+    "email": "daniel.martin@example.com"
+  },
+  "request": {
+    "service_type": "Heating repair",
+    "existing_appointment": "2026-10-06 9:00 AM",
+    "new_preferred_date": "2026-10-07",
+    "new_preferred_time": "1:00 PM"
+  },
+  "expected_result": {
+    "status": "reschedule_request",
+    "action": "collect_appointment_details_and_follow_rescheduling_process"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "scenario": "request_human",
+  "customer": {
+    "name": "Christopher Thompson",
+    "phone": "+1555010011",
+    "email": "christopher.thompson@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "Customer has a complex question and specifically wants to speak with a human representative."
+  },
+  "expected_result": {
+    "status": "human_requested",
+    "action": "follow_human_handoff_process"
+  }
+}

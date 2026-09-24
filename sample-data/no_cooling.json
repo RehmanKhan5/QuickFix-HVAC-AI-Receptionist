@@ -1,0 +1,17 @@
+{
+  "scenario": "no_cooling",
+  "customer": {
+    "name": "Thomas Clark",
+    "phone": "+1555010013",
+    "email": "thomas.clark@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "The AC is blowing air but the air is not cold.",
+    "urgency": "normal"
+  },
+  "expected_result": {
+    "status": "qualified_lead",
+    "action": "collect_customer_information_and_create_service_request"
+  }
+}

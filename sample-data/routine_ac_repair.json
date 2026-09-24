@@ -1,0 +1,19 @@
+{
+  "scenario": "routine_ac_repair",
+  "customer": {
+    "name": "John Smith",
+    "phone": "+1555010001",
+    "email": "john.smith@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "The air conditioner is running but not cooling the house.",
+    "urgency": "normal",
+    "preferred_date": "2026-09-28",
+    "preferred_time": "10:00 AM"
+  },
+  "expected_result": {
+    "status": "qualified_lead",
+    "action": "collect_customer_information_and_create_service_request"
+  }
+}

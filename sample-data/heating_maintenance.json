@@ -1,0 +1,19 @@
+{
+  "scenario": "heating_maintenance",
+  "customer": {
+    "name": "David Wilson",
+    "phone": "+1555010004",
+    "email": "david.wilson@example.com"
+  },
+  "request": {
+    "service_type": "Heating maintenance",
+    "issue": "Customer wants routine furnace maintenance before winter.",
+    "urgency": "normal",
+    "preferred_date": "2026-10-02",
+    "preferred_time": "2:00 PM"
+  },
+  "expected_result": {
+    "status": "qualified_lead",
+    "action": "collect_customer_information_and_create_service_request"
+  }
+}

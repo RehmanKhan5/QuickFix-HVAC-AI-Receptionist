@@ -1,0 +1,19 @@
+{
+  "scenario": "heating_failure",
+  "customer": {
+    "name": "Michael Brown",
+    "phone": "+1555010003",
+    "email": "michael.brown@example.com"
+  },
+  "request": {
+    "service_type": "Heating repair",
+    "issue": "The furnace is running but the house is not getting warm.",
+    "urgency": "high",
+    "preferred_date": "2026-09-29",
+    "preferred_time": "9:00 AM"
+  },
+  "expected_result": {
+    "status": "qualified_lead",
+    "action": "collect_customer_information_and_create_service_request"
+  }
+}

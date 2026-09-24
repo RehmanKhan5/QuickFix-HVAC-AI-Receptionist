@@ -1,0 +1,16 @@
+{
+  "scenario": "invalid_request",
+  "customer": {
+    "name": "Test Customer",
+    "phone": "+1555010014",
+    "email": "test@example.com"
+  },
+  "request": {
+    "service_type": "Unknown",
+    "issue": "I want to order a pizza."
+  },
+  "expected_result": {
+    "status": "unsupported_request",
+    "action": "politely_explain_hvac_service_scope"
+  }
+}

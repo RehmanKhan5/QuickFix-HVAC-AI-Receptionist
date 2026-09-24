@@ -1,0 +1,19 @@
+{
+  "scenario": "missing_information",
+  "customer": {
+    "name": "Emily Taylor",
+    "phone": "",
+    "email": ""
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "The AC is not cooling.",
+    "urgency": "normal",
+    "preferred_date": "",
+    "preferred_time": ""
+  },
+  "expected_result": {
+    "status": "incomplete_information",
+    "action": "ask_for_missing_customer_information"
+  }
+}

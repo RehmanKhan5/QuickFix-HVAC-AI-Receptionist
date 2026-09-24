@@ -1,0 +1,20 @@
+{
+  "scenario": "outside_service_area",
+  "customer": {
+    "name": "James Anderson",
+    "phone": "+1555010007",
+    "email": "james.anderson@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "issue": "The AC is not cooling.",
+    "urgency": "normal",
+    "customer_location": "Example City, Outside Service Area",
+    "preferred_date": "2026-10-04",
+    "preferred_time": "10:00 AM"
+  },
+  "expected_result": {
+    "status": "outside_service_area",
+    "action": "politely_explain_service_area_limitation"
+  }
+}

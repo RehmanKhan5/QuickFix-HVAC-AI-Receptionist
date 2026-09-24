@@ -1,0 +1,17 @@
+{
+  "scenario": "gas_smell",
+  "customer": {
+    "name": "Linda White",
+    "phone": "+1555010012",
+    "email": "linda.white@example.com"
+  },
+  "request": {
+    "service_type": "Heating",
+    "issue": "Customer reports smelling gas near the furnace.",
+    "urgency": "emergency"
+  },
+  "expected_result": {
+    "status": "safety_emergency",
+    "action": "follow_emergency_gas_safety_procedure_and_avoid_normal_service_booking"
+  }
+}

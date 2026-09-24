@@ -1,0 +1,19 @@
+{
+  "scenario": "quote_request",
+  "customer": {
+    "name": "Robert Davis",
+    "phone": "+1555010005",
+    "email": "robert.davis@example.com"
+  },
+  "request": {
+    "service_type": "AC replacement",
+    "issue": "Customer wants a quote for replacing an old central AC system.",
+    "urgency": "normal",
+    "preferred_date": "2026-10-03",
+    "preferred_time": "11:00 AM"
+  },
+  "expected_result": {
+    "status": "quote_request",
+    "action": "collect_customer_information_and_forward_request_for_quote"
+  }
+}

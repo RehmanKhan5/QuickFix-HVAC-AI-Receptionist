@@ -1,0 +1,19 @@
+{
+  "scenario": "emergency_ac",
+  "customer": {
+    "name": "Sarah Johnson",
+    "phone": "+1555010002",
+    "email": "sarah.johnson@example.com"
+  },
+  "request": {
+    "service_type": "AC emergency",
+    "issue": "The AC stopped working completely and the house is extremely hot.",
+    "urgency": "emergency",
+    "preferred_date": "2026-09-28",
+    "preferred_time": "ASAP"
+  },
+  "expected_result": {
+    "status": "urgent_lead",
+    "action": "prioritize_request_and_collect_customer_information"
+  }
+}

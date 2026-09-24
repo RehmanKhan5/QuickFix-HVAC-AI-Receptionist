@@ -1,0 +1,17 @@
+{
+  "scenario": "cancellation",
+  "customer": {
+    "name": "Jennifer Harris",
+    "phone": "+1555010009",
+    "email": "jennifer.harris@example.com"
+  },
+  "request": {
+    "service_type": "AC repair",
+    "existing_appointment": "2026-10-05 10:00 AM",
+    "reason": "Customer no longer needs the appointment."
+  },
+  "expected_result": {
+    "status": "cancellation_request",
+    "action": "collect_existing_appointment_details_and_process_cancellation"
+  }
+}
