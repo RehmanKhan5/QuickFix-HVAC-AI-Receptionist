@@ -1,55 +1,49 @@
-# QuickFix HVAC — Day 1 Notes
-
-## 1. Day 1 Overview
+QuickFix HVAC — Day 1 Notes
+1. Day 1 Overview
 
 Day 1 is the foundation and documentation setup day for the QuickFix HVAC AI Voice Receptionist project.
 
-The main purpose of Day 1 was to organize the project properly before starting the actual technical build.
+The main purpose of Day 1 was to organize the project properly, establish the project structure, document the system architecture and testing strategy, and begin the first technical implementation.
 
 The project is a portfolio prototype for learning and demonstration purposes.
 
 It is not connected to a real HVAC company or real customers.
 
----
+2. Project Name
 
-## 2. Project Name
+QuickFix HVAC — 24/7 AI Voice Receptionist & Service Request Automation
 
-**QuickFix HVAC — 24/7 AI Voice Receptionist & Service Request Automation**
+Fictional Company
 
-### Fictional Company
+QuickFix HVAC & Cooling
 
-**QuickFix HVAC & Cooling**
-
-### Location
+Location
 
 Austin, Texas, USA
 
-### Project Type
+Project Type
 
 Portfolio prototype / learning project
 
-### Main Goal
+Main Goal
 
 Build an AI voice receptionist that can:
 
-* Answer customer calls.
-* Understand HVAC service requests.
-* Collect customer information.
-* Identify routine and emergency situations.
-* Submit valid service requests to n8n.
-* Save service requests to Google Sheets.
-* Return the correct result to the AI agent.
-* Create post-call records.
-* Send Gmail notifications.
-* Handle errors and unsafe situations safely.
-
----
-
-## 3. Project Folder Structure
+Answer customer calls.
+Understand HVAC service requests.
+Collect customer information.
+Identify routine and emergency situations.
+Submit valid service requests to n8n.
+Validate incoming service-request information.
+Save service requests to Google Sheets.
+Return the correct result to the AI agent.
+Create post-call records.
+Send Gmail notifications.
+Handle errors and unsafe situations safely.
+3. Project Folder Structure
 
 The main project folder was created:
 
-```text
 QuickFix-HVAC-AI-Receptionist/
 ├── workflows/
 ├── prompts/
@@ -58,57 +52,53 @@ QuickFix-HVAC-AI-Receptionist/
 ├── screenshots/
 ├── docs/
 └── notes/
-```
 
 The purpose of these folders is:
 
-### workflows/
+workflows/
 
 Used for exported n8n workflow JSON files.
 
-### prompts/
+prompts/
 
 Used for ElevenLabs AI agent prompts.
 
-### knowledge/
+knowledge/
 
 Used for business knowledge files such as services, pricing, FAQs, business hours, and service area.
 
-### sample-data/
+sample-data/
 
-Used for sample JSON files for testing.
+Used for sample JSON files and structured test scenarios.
 
-### screenshots/
+screenshots/
 
 Used to store important project screenshots and milestone evidence.
 
-### docs/
+docs/
 
 Used for project documentation such as architecture and testing documentation.
 
-### notes/
+notes/
 
 Used for daily learning and development notes.
 
----
+4. Documentation Files Created
 
-## 4. Documentation Files Created
+The following documentation files were created during the initial project setup.
 
-The following documentation files were created on Day 1:
-
-### README.md
+README.md
 
 The main project documentation file.
 
 It explains the project, its purpose, technology stack, architecture, and important information for understanding the project.
 
-### docs/architecture.md
+docs/architecture.md
 
 This file documents the system architecture and explains how the different components work together.
 
-The main architecture is:
+The planned main architecture is:
 
-```text
 Customer
    ↓
 Twilio
@@ -128,27 +118,21 @@ Respond to Webhook
 ElevenLabs
    ↓
 Customer
-```
 
 A separate post-call workflow will process call information after the conversation.
 
----
+5. Testing Documentation
 
-## 5. Testing Documentation Created
+The following file was created:
 
-The following file was also created:
-
-```text
 docs/testing.md
-```
 
 This document explains how the complete system will be tested.
 
-Testing will be performed gradually instead of immediately making real telephone calls.
+Testing will be performed gradually so that individual components can be verified before moving to the next stage.
 
 The planned testing sequence is:
 
-```text
 Sample JSON
 ↓
 Postman
@@ -162,134 +146,120 @@ ElevenLabs Text Testing
 ElevenLabs Browser Voice Testing
 ↓
 Twilio Telephone Testing
-```
 
 The purpose of this sequence is to identify problems at the simplest level first.
 
-This helps reduce:
+This makes troubleshooting easier because each part of the system can be tested separately.
 
-* Unnecessary API usage.
-* Unnecessary telephone usage.
-* Debugging difficulty.
-* Repeated voice calls.
-* Unnecessary Twilio costs.
-
----
-
-## 6. Important Testing Areas Documented
+6. Important Testing Areas Documented
 
 The testing documentation covers:
 
-1. Normal service requests.
-2. Emergency service requests.
-3. Missing customer information.
-4. Invalid information.
-5. Customers outside the service area.
-6. Emergency fee declined.
-7. Safety-related situations.
-8. Human assistance requests.
-9. Tool or webhook failure.
-10. Google Sheets service-request records.
-11. Google Sheets call-history records.
-12. Gmail notifications.
-13. Optional SMS notifications.
-14. Conversation context continuity.
-15. Final voice-call behavior.
-16. Final acceptance criteria.
-
----
-
-## 7. Test Cases Documented
+Normal service requests.
+Emergency service requests.
+Missing customer information.
+Invalid information.
+Customers outside the service area.
+Emergency fee declined.
+Safety-related situations.
+Human assistance requests.
+Tool or webhook failure.
+Google Sheets service-request records.
+Google Sheets call-history records.
+Gmail notifications.
+Optional SMS notifications.
+Conversation context continuity.
+Final voice-call behavior.
+Final acceptance criteria.
+7. Test Cases Documented
 
 The following test cases were documented:
 
-### TC-001
+TC-001
 
 Normal AC repair request.
 
-### TC-002
+TC-002
 
 HVAC maintenance request.
 
-### TC-003
+TC-003
 
 Heating repair request.
 
-### TC-004
+TC-004
 
 Customer requests a quote.
 
-### TC-005
+TC-005
 
 Service request with missing information.
 
-### TC-006
+TC-006
 
 Emergency AC failure.
 
-### TC-007
+TC-007
 
 Suspected gas smell.
 
-### TC-008
+TC-008
 
 Fire, smoke, sparks, or electrical danger.
 
-### TC-009
+TC-009
 
 Indoor AC water leak.
 
-### TC-010
+TC-010
 
 Emergency fee declined.
 
-### TC-011
+TC-011
 
 Customer outside the service area.
 
-### TC-012
+TC-012
 
 Customer requests a human.
 
-### TC-013
+TC-013
 
 Invalid customer information.
 
-### TC-014
+TC-014
 
 Service request tool failure.
 
-### TC-015
+TC-015
 
 Google Sheets service-request record.
 
-### TC-016
+TC-016
 
 Google Sheets call-history record.
 
-### TC-017
+TC-017
 
 Gmail notification.
 
-### TC-018
+TC-018
 
 Optional SMS notification.
 
-### TC-019
+TC-019
 
 Conversation context continuity.
 
-These tests are documented but have not yet been performed.
+These tests are documented but have not all been performed yet.
 
 Their initial status is:
 
-**NOT TESTED**
+NOT TESTED
 
 The status will be changed after the actual tests are performed.
 
----
-
-## 8. Important Architecture Decision
+8. Important Architecture Decision
 
 One important design principle established during Day 1 is that Google Sheets should not be written on every conversation turn.
 
@@ -299,7 +269,6 @@ The service request should be written to Google Sheets when the required informa
 
 The basic flow is:
 
-```text
 Customer Conversation
         ↓
 Information Collection
@@ -311,117 +280,350 @@ Service Request Tool
 n8n Validation
         ↓
 Google Sheets
-```
 
-This helps avoid unnecessary workflow executions and unnecessary database writes during the conversation.
+This helps keep the workflow organized and avoids unnecessary database writes during the conversation.
 
----
-
-## 9. Important Business Rules
+9. Important Business Rules
 
 The AI receptionist must not:
 
-* Invent prices.
-* Invent services.
-* Invent appointment availability.
-* Promise a technician arrival time without confirmation.
-* Claim that a booking is confirmed without an actual booking confirmation.
-* Claim that an email or SMS was successfully sent unless the workflow confirms it.
-* Claim that a service request was successfully submitted before n8n confirms success.
-* Provide professional HVAC diagnoses.
-* Give unsafe repair instructions.
-* Collect unnecessary personal information.
+Invent prices.
+Invent services.
+Invent appointment availability.
+Promise a technician arrival time without confirmation.
+Claim that a booking is confirmed without an actual booking confirmation.
+Claim that an email or SMS was successfully sent unless the workflow confirms it.
+Claim that a service request was successfully submitted before n8n confirms success.
+Provide professional HVAC diagnoses.
+Give unsafe repair instructions.
+Collect unnecessary personal information.
 
 The AI receptionist should provide truthful responses based on the available business information and tool results.
 
----
-
-## 10. Emergency and Safety Principle
+10. Emergency and Safety Principle
 
 Safety situations require different handling from normal HVAC requests.
 
 Examples include:
 
-* Suspected gas smell.
-* Fire.
-* Smoke.
-* Sparks.
-* Electrical danger.
-* Serious water leakage involving electrical equipment.
-* Extreme heat or cold situations.
+Suspected gas smell.
+Fire.
+Smoke.
+Sparks.
+Electrical danger.
+Serious water leakage involving electrical equipment.
+Extreme heat or cold situations.
 
 The AI agent must not provide unsafe DIY instructions.
 
 The agent should follow the defined emergency and safety procedures and must not falsely claim that a technician or emergency service has been dispatched.
 
----
+11. Git Repository Setup
 
-## 11. Documentation Principle
+The project was initialized as a Git repository so that project files can be tracked, organized, versioned, and backed up to GitHub.
+
+Git also makes it easier to see what has changed during development.
+
+11.1 Initialize Git
+
+The project folder was opened in the terminal and the following command was used:
+
+git init
+
+This created a local Git repository inside the project folder.
+
+11.2 Create .gitignore
+
+A .gitignore file was created in the root of the project.
+
+Its purpose is to tell Git which files and folders should not be included in the repository.
+
+The .gitignore file includes:
+
+.env
+node_modules/
+.vscode/
+.idea/
+Why these files are ignored
+.env — may contain private API keys, passwords, tokens, or other secrets.
+node_modules/ — contains installed dependencies and normally does not need to be uploaded to GitHub.
+.vscode/ — contains local Visual Studio Code settings.
+.idea/ — contains local JetBrains IDE settings.
+12. .env.example
+
+An .env.example file was also created.
+
+This file is used as a safe template showing which environment variables the project may need.
+
+It should contain variable names and placeholders rather than real secret values.
+
+For example:
+
+API_KEY=your_api_key_here
+
+The .env.example file must not contain real API keys or other private credentials.
+
+13. Important Security Rule
+
+Never place real API keys, passwords, access tokens, webhook secrets, or other private credentials inside GitHub.
+
+Real secrets should remain in an appropriate secure location.
+
+The .env file is included in .gitignore so that Git does not normally track it.
+
+The .env.example file can be used as a template because it contains variable names and placeholders rather than real credentials.
+
+14. Sample Data
+
+The sample-data/ folder was prepared for structured HVAC test scenarios.
+
+The sample data is used to test different situations before performing complete voice-based testing.
+
+The project contains multiple HVAC scenarios covering normal requests, emergencies, missing information, safety situations, human requests, and tool failures.
+
+These JSON files provide consistent test data for the project.
+
+15. n8n Test Webhook
+
+The first n8n technical implementation was started during Day 1.
+
+An n8n Webhook node was created for receiving service-request information.
+
+Webhook Name
+
+Test Webhook
+
+HTTP Method
+
+POST
+
+Webhook Path
+quickfix-hvac-service-request
+
+The webhook path becomes part of the webhook URL.
+
+The purpose of the webhook is to receive structured JSON data from an external source such as Postman or, later, the ElevenLabs service-request tool.
+
+Development Testing
+
+The Test URL is being used during development and testing.
+
+The production URL will be used later when the workflow is ready for the appropriate integration.
+
+16. n8n Webhook Testing Flow
+
+The current basic testing flow is:
+
+Postman
+   ↓
+POST Request
+   ↓
+n8n Test Webhook
+   ↓
+Receive JSON
+
+The purpose of this test is to confirm that n8n can correctly receive structured service-request data.
+
+17. Sample Service Request JSON
+
+A sample service-request structure was prepared for testing:
+
+{
+  "customerName": "John Smith",
+  "phone": "+15125550123",
+  "email": "john@example.com",
+  "address": "123 Austin Street, Austin, TX",
+  "serviceType": "AC Repair",
+  "issue": "AC is blowing warm air",
+  "emergency": false,
+  "feeAgreed": true,
+  "preferredTime": "As soon as possible"
+}
+
+This sample data represents a normal HVAC service request.
+
+18. Postman Testing
+
+Postman will be used to send sample JSON data to the n8n Test Webhook.
+
+The planned request configuration is:
+
+Method
+POST
+Body
+raw
+Data Type
+JSON
+Header
+Content-Type: application/json
+
+The purpose of the Postman test is to verify that the n8n Webhook receives the JSON correctly.
+
+Current Status
+
+PENDING
+
+The Postman request has not yet been completed.
+
+19. Screenshot Documentation
+
+Important development screenshots are stored in:
+
+screenshots/
+
+The n8n Test Webhook screenshot was captured and saved as:
+
+screenshots/n8n-test-webhook.png
+
+The screenshot was added to Git and pushed to the GitHub repository.
+
+This provides visual evidence of the development milestone.
+
+20. GitHub Backup and Version Control
+
+The project is connected to GitHub.
+
+Repository:
+
+QuickFix-HVAC-AI-Receptionist
+
+GitHub account/handle:
+
+RehmanKhan5
+
+The project uses Git to track changes and GitHub to store the project repository remotely.
+
+A typical Git workflow is:
+
+git status
+git add .
+git commit -m "Describe what was added"
+git push
+
+For a specific file, for example:
+
+git add notes/day-1.md
+git commit -m "Update Day 1 project notes"
+git push
+21. Screenshot GitHub Commit
+
+The n8n Test Webhook screenshot was successfully committed and pushed to GitHub.
+
+The file is:
+
+screenshots/n8n-test-webhook.png
+
+The successful push confirmed that the screenshot is now stored in the remote GitHub repository.
+
+22. Documentation Principle
 
 This project is intentionally being documented in detail because it is both:
 
-* A learning project.
-* A portfolio project.
+A learning project.
+A portfolio project.
 
 The documentation will make it easier to:
 
-* Understand what was built.
-* Remember what was learned.
-* Troubleshoot problems.
-* Demonstrate the project to potential clients.
-* Create a GitHub portfolio repository.
-* Explain the project during an Upwork proposal or client discussion.
+Understand what was built.
+Remember what was learned.
+Troubleshoot problems.
+Demonstrate the project to potential clients.
+Maintain the GitHub portfolio repository.
+Explain the project during an Upwork proposal or client discussion.
 
 Future real client projects do not necessarily need this same level of documentation.
 
 The documentation can be lighter when the workflow and requirements are already understood.
 
----
+23. Day 1 Completion Status
+Completed
 
-## 12. Day 1 Completion Status
+Main project folder created.
 
-### Completed
+Project subfolders created.
 
-* [x] Main project folder created.
-* [x] Project subfolders created.
-* [x] `README.md` created.
-* [x] `docs/architecture.md` created.
-* [x] `docs/testing.md` created.
-* [x] Testing strategy documented.
-* [x] Test cases documented.
-* [x] Final testing checklist documented.
-* [x] Important architecture and business rules documented.
+Git repository initialized.
 
-### Not Yet Completed
+.gitignore created.
 
-The following technical implementation tasks will be completed on later days:
+.env.example created.
 
-* [ ] Create the actual n8n workflows.
-* [ ] Configure n8n Webhook.
-* [ ] Create validation logic.
-* [ ] Connect Google Sheets.
-* [ ] Configure Respond to Webhook.
-* [ ] Create the ElevenLabs agent.
-* [ ] Configure the service-request tool.
-* [ ] Configure the post-call webhook.
-* [ ] Configure Gmail notification.
-* [ ] Prepare sample JSON files.
-* [ ] Test with Postman.
-* [ ] Perform ElevenLabs testing.
-* [ ] Perform Twilio testing.
-* [ ] Complete final testing.
-* [ ] Prepare GitHub portfolio repository.
-* [ ] Record the final demonstration.
+README.md created.
 
----
+docs/architecture.md created.
 
-## 13. Lessons Learned on Day 1
+docs/testing.md created.
+
+Testing strategy documented.
+
+Test cases documented.
+
+Important architecture decisions documented.
+
+Important business rules documented.
+
+Safety principles documented.
+
+sample-data/ prepared.
+
+n8n Cloud project started.
+
+n8n Test Webhook created.
+
+Webhook HTTP method configured as POST.
+
+Webhook path configured.
+
+Test Webhook screenshot captured.
+
+Screenshot saved in screenshots/.
+
+Screenshot committed to Git.
+
+Screenshot pushed to GitHub.
+
+Not Yet Completed
+
+Complete Postman test.
+
+Confirm JSON reception in n8n.
+
+Create Edit Fields / data preparation step.
+
+Create validation logic.
+
+Create IF / routing logic.
+
+Configure Google Sheets.
+
+Configure Respond to Webhook.
+
+Create the ElevenLabs agent.
+
+Configure the submit_service_request tool.
+
+Configure the post-call webhook.
+
+Configure Gmail notification.
+
+Perform ElevenLabs testing.
+
+Perform browser voice testing.
+
+Perform Twilio telephone testing.
+
+Complete final end-to-end testing.
+
+Prepare final GitHub portfolio documentation.
+
+Record the final demonstration.
+
+24. Lessons Learned on Day 1
 
 The main lesson from Day 1 is that an AI voice receptionist is not only a voice chatbot.
 
 The complete system contains:
 
-```text
 Voice Agent
      +
 Automation
@@ -435,115 +637,40 @@ Notifications
 Error Handling
      +
 Safety Rules
-```
 
-A successful AI receptionist should therefore be designed as a complete business workflow rather than only as a conversation.
+A complete AI receptionist should therefore be designed as a business workflow rather than only as a conversation.
 
----
+Another important lesson is that structured testing makes a complex automation easier to understand and troubleshoot.
 
-## 14. Day 1 Final Summary
+The project is being developed step by step:
+
+Project Foundation
+        ↓
+Documentation
+        ↓
+Sample Data
+        ↓
+n8n Webhook
+        ↓
+Postman
+        ↓
+n8n Workflow
+        ↓
+ElevenLabs
+        ↓
+Telephone Integration
+        ↓
+Final End-to-End Test
+25. Day 1 Final Summary
 
 Day 1 established the foundation of the QuickFix HVAC project.
 
-The project structure and main documentation were created before starting the technical implementation.
+The project structure and main documentation were created before moving deeper into the technical implementation.
 
-The architecture, testing strategy, test cases, business rules, safety principles, and acceptance criteria have been documented.
+The architecture, testing strategy, test cases, business rules, safety principles, Git repository, sample data structure, and n8n Test Webhook were established.
 
-The next stage of the project will move from documentation into the actual technical implementation.
+The Test Webhook screenshot was also documented and pushed to GitHub.
 
-**Day 1 Status: FOUNDATION COMPLETE**
+The next stage of the project will continue with the Postman test and then proceed to the remaining n8n workflow implementation.
 
-# 4. Git Repository Setup
-
-## 4.1 Purpose
-
-The project was initialized as a Git repository so that the project files can be tracked, organized, versioned, and later backed up to GitHub.
-
-Git will also make it easier to see what has changed during the development of the QuickFix HVAC AI Receptionist project.
-
-## 4.2 Initialize Git
-
-The project folder was opened in the terminal.
-
-The following command was used:
-
-```bash
-git init
-```
-
-This created a local Git repository inside the project folder.
-
-## 4.3 Create `.gitignore`
-
-A `.gitignore` file was created in the root of the project.
-
-Its purpose is to tell Git which files and folders should not be included in the repository.
-
-The `.gitignore` file includes items such as:
-
-```text
-.env
-node_modules/
-.vscode/
-.idea/
-```
-
-### Why these files are ignored
-
-* `.env` — may contain private API keys, passwords, tokens, or other secrets.
-* `node_modules/` — contains installed dependencies and normally does not need to be uploaded to GitHub.
-* `.vscode/` — contains Visual Studio Code settings that are generally specific to the local computer.
-* `.idea/` — contains JetBrains IDE settings that are generally specific to the local computer.
-
-## 4.4 Create `.env.example`
-
-An `.env.example` file was also created.
-
-This file is used as a safe template showing which environment variables the project may need.
-
-It can contain variable names such as:
-
-```text
-GEMINI_API_KEY=
-AIRTABLE_API_KEY=
-```
-
-or other required configuration names as the project develops.
-
-The `.env.example` file must **not** contain the real secret values.
-
-For example:
-
-```text
-GEMINI_API_KEY=your_api_key_here
-```
-
-is acceptable as an example, while an actual API key must remain private.
-
-## 4.5 Important Security Rule
-
-**Never place real API keys, passwords, access tokens, webhook secrets, or other private credentials inside GitHub.**
-
-Real secrets should remain in the local `.env` file or another appropriate secure secret-management system.
-
-The `.env` file is included in `.gitignore` so that Git does not normally track it.
-
-The `.env.example` file is safe to use as a template because it contains variable names and placeholders rather than real credentials.
-
-## 4.6 Day 1 Git Setup Result
-
-The QuickFix HVAC project now has a local Git repository with basic protection against accidentally committing sensitive information.
-
-The repository will later be used to organize and back up project files such as:
-
-* n8n workflow exports
-* ElevenLabs prompts
-* Knowledge files
-* Sample test data
-* Documentation
-* Testing records
-* Screenshots
-* Project notes
-* README.md
-
-GitHub backup will be completed as part of the appropriate later project step.
+Day 1 Status: FOUNDATION AND INITIAL WEBHOOK SETUP COMPLETE
