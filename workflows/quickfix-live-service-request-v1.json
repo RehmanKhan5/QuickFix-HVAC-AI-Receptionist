@@ -1,0 +1,987 @@
+{
+  "name": "QuickFix HVAC — Live Service Request",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quickfix-hvac-service-request",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -576,
+        -32
+      ],
+      "id": "2c616d38-c96f-4728-9636-eebe99cbfdcc",
+      "name": "Test Webhook",
+      "webhookId": "b6f33606-fb3e-40e5-b78a-71e20fb2d9ec"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c844e1a4-cd13-4375-8671-16612503323f",
+              "name": "customerName",
+              "value": "=\n{{ $json.body.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "48e4af0d-44eb-4dfc-9188-6da2ccbad83a",
+              "name": "phone",
+              "value": "={{ $json.body.phone }}\n",
+              "type": "string"
+            },
+            {
+              "id": "7ef25fc9-5085-4d2c-b51a-b2f4229bb484",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "d4e670ba-50ed-4ac0-ba90-513f0a377bce",
+              "name": "address",
+              "value": "={{ $json.body.address }}",
+              "type": "string"
+            },
+            {
+              "id": "c349d7c7-4358-44dc-8cb9-15deb0362f8a",
+              "name": "serviceType",
+              "value": "={{ $json.body.serviceType }}",
+              "type": "string"
+            },
+            {
+              "id": "9cf103d9-95a8-420e-b794-de9e8d050e3b",
+              "name": "issue",
+              "value": "={{ $json.body.issue }}",
+              "type": "string"
+            },
+            {
+              "id": "1992c0c3-ded3-435d-b36f-d80d40b30622",
+              "name": "emergency",
+              "value": "={{ $json.body.emergency }}",
+              "type": "string"
+            },
+            {
+              "id": "444d2826-4335-4590-9561-8c17f1e8f7ea",
+              "name": "feeAgreed",
+              "value": "={{ $json.body.feeAgreed }}\n",
+              "type": "string"
+            },
+            {
+              "id": "329fedef-6ba7-42fd-af29-51003ce25b53",
+              "name": "preferredTime",
+              "value": "={{ $json.body.preferredTime }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -400,
+        -32
+      ],
+      "id": "cbbce51d-794f-48a0-96d6-d5d38c9c8a5a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\n// ========================================\n// 1. CLEAN / NORMALIZE INPUT DATA\n// ========================================\n\nconst customerName = String(data.customerName || '').trim();\nconst phone = String(data.phone || '').trim();\nconst email = String(data.email || '').trim();\nconst address = String(data.address || '').trim();\nconst serviceType = String(data.serviceType || '').trim();\nconst issue = String(data.issue || '').trim();\nconst preferredTime = String(data.preferredTime || '').trim();\n\n// Convert values to real Boolean values\nconst emergency = String(data.emergency || '').trim().toLowerCase() === 'true';\nconst feeAgreed = String(data.feeAgreed || '').trim().toLowerCase() === 'true';\n\n\n// ========================================\n// 2. REQUIRED INFORMATION VALIDATION\n// ========================================\n\nconst missingFields = [];\n\nif (!customerName) {\n  missingFields.push('customerName');\n}\n\nif (!phone) {\n  missingFields.push('phone');\n}\n\n\n// ========================================\n// 3. PHONE NUMBER VALIDATION\n// ========================================\n\nlet phoneValid = true;\n\nif (!phone) {\n  phoneValid = false;\n} else {\n  const phoneDigits = phone.replace(/\\D/g, '');\n\n  if (phoneDigits.length < 10) {\n    phoneValid = false;\n  }\n}\n\n\n// ========================================\n// 4. EMERGENCY REQUEST VALIDATION\n// ========================================\n\nif (emergency === true) {\n\n  if (!address) {\n    missingFields.push('address');\n  }\n\n  if (!issue) {\n    missingFields.push('issue');\n  }\n}\n\n\n// ========================================\n// 5. ROUTINE REQUEST VALIDATION\n// ========================================\n\nif (emergency === false) {\n\n  if (!serviceType) {\n    missingFields.push('serviceType');\n  }\n\n  if (!preferredTime) {\n    missingFields.push('preferredTime');\n  }\n}\n\n\n// ========================================\n// 6. SERVICE AREA VALIDATION\n// ========================================\n\nconst supportedAreas = [\n  'austin',\n  'round rock',\n  'pflugerville',\n  'cedar park'\n];\n\nconst addressLower = address.toLowerCase();\n\nlet serviceArea = '';\n\nfor (const area of supportedAreas) {\n  if (addressLower.includes(area)) {\n    serviceArea = area;\n    break;\n  }\n}\n\nconst serviceAreaValid = serviceArea !== '';\n\n\n// ========================================\n// 7. EMERGENCY FEE AGREEMENT VALIDATION\n// ========================================\n\nlet emergencyFeeValid = true;\n\nif (emergency === true) {\n\n  if (feeAgreed !== true) {\n    emergencyFeeValid = false;\n  }\n}\n\n\n// ========================================\n// 8. FINAL VALIDATION\n// ========================================\n\nconst isValid =\n  missingFields.length === 0 &&\n  phoneValid &&\n  serviceAreaValid &&\n  emergencyFeeValid;\n\n\n// ========================================\n// 9. RETURN CLEAN DATA\n// ========================================\n\nreturn {\n  customerName,\n  phone,\n  email,\n  address,\n  serviceType,\n  issue,\n  emergency,\n  feeAgreed,\n  preferredTime,\n\n  phoneValid,\n  serviceAreaValid,\n  serviceArea,\n  emergencyFeeValid,\n\n  isValid,\n  missingFields\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        -32
+      ],
+      "id": "9297aff5-cdc2-4ee0-99d9-a25301557327",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "edba8e0b-e433-4695-912c-932ccf03a473",
+              "leftValue": "={{ $json.isValid === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "3f319937-6123-4ee6-83e3-32d7e3c97fb3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": false,\n  \"message\": \"Sorry, we currently provide HVAC service only in our supported service areas.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        96,
+        16
+      ],
+      "id": "14116b07-4af0-4e6e-8d83-e390d11c0498",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "numberOutputs": 2,
+        "output": "= {{ $json.emergency ? 0 : 1 }}",
+        "looseTypeValidation": true
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        -160
+      ],
+      "id": "f269210a-d5f4-4a78-be18-4fb7574fc2d1",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c80a1256-94e6-4fdb-bf65-b4e2ecc35117",
+              "name": "customerName",
+              "value": "={{ $json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "b4c10a9d-49bd-43d4-b5d9-fb0ac533e01b",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "836e55aa-457b-4c85-a663-a19d45eb5567",
+              "name": "address",
+              "value": "={{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "102138ca-adde-4808-8663-6785942860c7",
+              "name": "serviceType",
+              "value": "={{ $json.serviceType }}",
+              "type": "string"
+            },
+            {
+              "id": "b436588b-1fbf-466f-bfdf-0c71e597075a",
+              "name": "issue",
+              "value": "={{ $json.issue }}",
+              "type": "string"
+            },
+            {
+              "id": "928c098d-201b-4470-b34d-334fc44e58b2",
+              "name": "emergency",
+              "value": "={{ $json.emergency }}",
+              "type": "boolean"
+            },
+            {
+              "id": "ddaa2506-6abc-43c7-bf07-eebf75e06999",
+              "name": "feeAgreed",
+              "value": "={{ $json.feeAgreed }}",
+              "type": "boolean"
+            },
+            {
+              "id": "6bd74b72-76e2-465e-a704-c538a40afa29",
+              "name": "preferredTime",
+              "value": "={{ $json.preferredTime }}",
+              "type": "string"
+            },
+            {
+              "id": "aebd8798-a638-4d4b-b7c3-ae5a42974842",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "8b5a1c88-bb9e-4854-947b-33a453543563",
+              "name": "serviceArea",
+              "value": "={{ $json.serviceArea }}",
+              "type": "string"
+            },
+            {
+              "id": "97535bb1-18e6-4040-b74a-5fc5a493c05d",
+              "name": "requestId",
+              "value": "={{ 'REQ-' + Date.now() }}",
+              "type": "string"
+            },
+            {
+              "id": "b9737866-c7bb-4754-973f-d353ee9dfa5f",
+              "name": "dateTime",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "3c4260bb-ce66-445e-b67a-bb9f2fd1f014",
+              "name": "status",
+              "value": "={{ 'New' }}",
+              "type": "string"
+            },
+            {
+              "id": "7baafb30-a68b-46f6-8b58-cdf38f1a7220",
+              "name": "notificationStatus",
+              "value": "={{ 'Pending' }}",
+              "type": "string"
+            },
+            {
+              "id": "c8d15c77-a5dd-42fa-bd77-aa066165588f",
+              "name": "source",
+              "value": "={{ 'AI Voice Agent' }}",
+              "type": "string"
+            },
+            {
+              "id": "63cf9489-0ac4-4772-92d4-d349fd400e67",
+              "name": "notes",
+              "value": "={{ 'Emergency request prepared for service processing.' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        288,
+        -272
+      ],
+      "id": "83b3ce0e-c30b-44e3-8aea-859ff7409ea4",
+      "name": "Prepare Emergency Request"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc",
+          "mode": "list",
+          "cachedResultName": "QuickFix HVAC — Customer Service Requests",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Service Requests",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $json.customerName }}",
+            "Request ID": "={{ $json.requestId }}",
+            "Date/Time": "={{ $json.dateTime }}",
+            "Phone": "={{ $json.phone }}",
+            "Email": "={{ $json.email }}",
+            "Address": "={{ $json.address }}",
+            "Service Area": "={{ $json.serviceArea }}",
+            "Service Type": "={{ $json.serviceType }}",
+            "Issue": "={{ $json.issue }}",
+            "Emergency": "={{ $json.emergency }}",
+            "Fee Agreed": "={{ $json.feeAgreed }}",
+            "Preferred Time": "={{ $json.preferredTime }}",
+            "Status": "={{ $json.status }}",
+            "Notification Status": "={{ $json.notificationStatus }}",
+            "Source": "={{ $json.source }}",
+            "Notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [
+            "Service Requests"
+          ],
+          "schema": [
+            {
+              "id": "Request ID",
+              "displayName": "Request ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date/Time",
+              "displayName": "Date/Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Service Area",
+              "displayName": "Service Area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Service Type",
+              "displayName": "Service Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Issue",
+              "displayName": "Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Emergency",
+              "displayName": "Emergency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fee Agreed",
+              "displayName": "Fee Agreed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Preferred Time",
+              "displayName": "Preferred Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notification Status",
+              "displayName": "Notification Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "locationDefine": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -272
+      ],
+      "id": "0c1079a1-7881-47ac-b4e5-965b29a81af3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "946v28nA8bHJxEj2",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"requestId\": $json.requestId, \"status\": $json.status, \"message\": \"Your emergency service request has been received successfully.\", \"notificationStatus\": $json.notificationStatus } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        640,
+        -272
+      ],
+      "id": "a2f7ddcc-4cb7-4456-99e9-74232cf6a2dc",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c08f3ee0-e095-4516-955c-b4b115026fba",
+              "name": "customerName",
+              "value": "={{ $json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "8cae09aa-aadf-4e34-8413-6114b96c3a76",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "78f35be6-a1c5-4c42-8779-2de62173c526",
+              "name": "address",
+              "value": "={{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "f8094b36-65a8-4065-9ff8-7d3f9b38881c",
+              "name": "serviceType",
+              "value": "={{ $json.serviceType }}",
+              "type": "string"
+            },
+            {
+              "id": "503f330a-78a0-4dd4-bda3-f2b9e5626d23",
+              "name": "issue",
+              "value": "={{ $json.issue }}",
+              "type": "string"
+            },
+            {
+              "id": "b054d80c-06e4-4ca3-a871-43def969f7ff",
+              "name": "emergency",
+              "value": "={{ $json.emergency }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fcc13a30-a760-447e-87a6-533e51266ed1",
+              "name": "feeAgreed",
+              "value": "={{ $json.feeAgreed }}",
+              "type": "boolean"
+            },
+            {
+              "id": "c67ae330-ade6-4ed7-95c6-94d6f7044c35",
+              "name": "preferredTime",
+              "value": "={{ $json.preferredTime }}",
+              "type": "string"
+            },
+            {
+              "id": "05016a8f-a8ce-4bf4-a77f-1faf36166810",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "5c63d083-e415-4c34-93c1-b65400e7f3be",
+              "name": "=serviceArea",
+              "value": "={{ $json.serviceArea }}",
+              "type": "string"
+            },
+            {
+              "id": "5b9edf0d-2f67-4ade-b5ea-65d744e9c57e",
+              "name": "requestId",
+              "value": "={{ 'REQ-' + Date.now() }}",
+              "type": "string"
+            },
+            {
+              "id": "5b4d36a6-417c-4a7d-8fa8-a1df3909cfca",
+              "name": "dateTime",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "4fdfee0e-a7be-4461-ad06-d43d65920dd9",
+              "name": "status",
+              "value": "={{ 'New' }}",
+              "type": "string"
+            },
+            {
+              "id": "c8cf0e36-4814-4417-aae9-110158e94957",
+              "name": "notificationStatus",
+              "value": "={{ 'Pending' }}",
+              "type": "string"
+            },
+            {
+              "id": "12d98d0d-9e53-4ad8-8eb7-c30fa5c1a041",
+              "name": "source",
+              "value": "={{ 'AI Voice Agent' }}",
+              "type": "string"
+            },
+            {
+              "id": "c791ddc0-19df-4a3e-8924-ff6feef95167",
+              "name": "notes",
+              "value": "={{ 'Routine service request received for scheduling.' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        336,
+        16
+      ],
+      "id": "4d20498e-bdee-462b-a9e0-9500a39b5acb",
+      "name": "Prepare Routine Request"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc",
+          "mode": "list",
+          "cachedResultName": "QuickFix HVAC — Customer Service Requests",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Service Requests",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Request ID": "={{ $json.requestId }}",
+            "Date/Time": "={{ $json.dateTime }}",
+            "Customer Name": "={{ $json.customerName }}",
+            "Phone": "={{ $json.phone }}",
+            "Email": "={{ $json.email }}",
+            "Address": "={{ $json.address }}",
+            "Service Area": "={{ $json.serviceArea }}",
+            "Service Type": "={{ $json.serviceType }}",
+            "Issue": "={{ $json.issue }}",
+            "Emergency": "={{ $json.emergency }}",
+            "Fee Agreed": "={{ $json.feeAgreed }}",
+            "Preferred Time": "={{ $json.preferredTime }}",
+            "Status": "={{ $json.status }}",
+            "Notification Status": "={{ $json.notificationStatus }}",
+            "Source": "={{ $json.source }}",
+            "Notes": "={{ $json.notes }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Request ID",
+              "displayName": "Request ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date/Time",
+              "displayName": "Date/Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service Area",
+              "displayName": "Service Area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service Type",
+              "displayName": "Service Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Issue",
+              "displayName": "Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Emergency",
+              "displayName": "Emergency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Fee Agreed",
+              "displayName": "Fee Agreed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Preferred Time",
+              "displayName": "Preferred Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notification Status",
+              "displayName": "Notification Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        528,
+        16
+      ],
+      "id": "d0d44f71-5390-46b9-96f6-ba4a24326f83",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "946v28nA8bHJxEj2",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"requestId\": $json.requestId,\n  \"status\": $json.status,\n  \"message\": \"Your routine service request has been received successfully. Our team will review your request for scheduling.\",\n  \"notificationStatus\": $json.notificationStatus\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        704,
+        16
+      ],
+      "id": "e6cbd722-0f93-4b23-be1b-c9d3316955b1",
+      "name": "Respond to Webhook2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Test Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Prepare Emergency Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Routine Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Emergency Request": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Routine Request": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "19a16509-cc15-4860-8a67-0e49657fbdf9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "772b393f2bcb7ff468ac6bb463cce2f5ab4144599eab85dbb52a2a13876866dd"
+  },
+  "nodeGroups": [],
+  "id": "0r96tcyO8iGgX06h",
+  "tags": []
+}
