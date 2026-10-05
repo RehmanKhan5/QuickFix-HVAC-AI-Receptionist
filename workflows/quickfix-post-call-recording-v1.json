@@ -1,0 +1,258 @@
+{
+  "name": "QuickFix HVAC — Post Call Recording",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quickfix-hvac-post-call",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fa252f3a-e0c7-4316-827d-505a86c8bd15",
+      "name": "Webhook",
+      "webhookId": "0b2af7d3-33aa-4f30-b5c9-f33e29b684b8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22816e32-3b01-49ba-b675-ec8fbdce0c9a",
+              "name": "callId",
+              "value": "={{$json.body.callId}}",
+              "type": "string"
+            },
+            {
+              "id": "2a22a3a4-c0eb-4c5b-ae09-9db401bfd286",
+              "name": "dateTime",
+              "value": "={{$json.body.dateTime}}",
+              "type": "string"
+            },
+            {
+              "id": "f7598367-336b-4ecc-a928-1a42144bcdd3",
+              "name": "customerName",
+              "value": "={{$json.body.customerName}}",
+              "type": "string"
+            },
+            {
+              "id": "ccfdd30d-d357-4b97-841c-056c1baa22d0",
+              "name": "phone",
+              "value": "={{$json.body.phone}}",
+              "type": "string"
+            },
+            {
+              "id": "a0593aa8-1b0b-4446-af16-3e2b41733d64",
+              "name": "callSummary",
+              "value": "={{$json.body.callSummary}}",
+              "type": "string"
+            },
+            {
+              "id": "d65a8537-d1c7-4d5d-a8c2-bfc37720f5ae",
+              "name": "callOutcome",
+              "value": "={{$json.body.callOutcome}}",
+              "type": "string"
+            },
+            {
+              "id": "523f6660-8336-48c6-a3e3-56958a903993",
+              "name": "requestStatus",
+              "value": "={{$json.body.requestStatus}}",
+              "type": "string"
+            },
+            {
+              "id": "93972189-adeb-4ffc-92d1-efc1b9683e6b",
+              "name": "source",
+              "value": "={{$json.body.source}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d1b4fffb-8db5-46c9-b902-3508a02267b8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc",
+          "mode": "list",
+          "cachedResultName": "QuickFix HVAC — Customer Service Requests",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 784273850,
+          "mode": "list",
+          "cachedResultName": "Call Hisory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1g84DuSJ7tFBX22qCG-3ckjGRTc5KlVAoYwlLvEIDwjc/edit#gid=784273850"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Call ID": "={{$json.callId}}",
+            "Date/Time": "={{$json.dateTime}}",
+            "Customer Name": "={{$json.customerName}}",
+            "Phone": "={{$json.phone}}",
+            "Call Summary": "={{$json.callSummary}}",
+            "Call Outcome": "={{$json.callOutcome}}",
+            "Request Status": "={{$json.requestStatus}}",
+            "Source": "={{$json.source}}"
+          },
+          "matchingColumns": [
+            "Call History"
+          ],
+          "schema": [
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date/Time",
+              "displayName": "Date/Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call Summary",
+              "displayName": "Call Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call Outcome",
+              "displayName": "Call Outcome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Request Status",
+              "displayName": "Request Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "9d044b71-6a92-4e43-906d-a510d9fa42de",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "946v28nA8bHJxEj2",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8bc896ca-1383-4855-a95a-349455502944",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "772b393f2bcb7ff468ac6bb463cce2f5ab4144599eab85dbb52a2a13876866dd"
+  },
+  "nodeGroups": [],
+  "id": "BU4aLlArAbBpj9bW",
+  "tags": []
+}
