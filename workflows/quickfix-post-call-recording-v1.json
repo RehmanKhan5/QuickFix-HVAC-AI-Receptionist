@@ -10,7 +10,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        0,
+        -208,
         0
       ],
       "id": "fa252f3a-e0c7-4316-827d-505a86c8bd15",
@@ -68,6 +68,36 @@
               "name": "source",
               "value": "={{$json.body.source}}",
               "type": "string"
+            },
+            {
+              "id": "17e28ecc-eecd-4a9e-80a9-b821dfd0b43f",
+              "name": "serviceType",
+              "value": "={{$json.body.serviceType}}",
+              "type": "string"
+            },
+            {
+              "id": "9fd2fd91-b458-4968-bfb5-d03812c95ee1",
+              "name": "issue",
+              "value": "={{$json.body.issue}}",
+              "type": "string"
+            },
+            {
+              "id": "19179666-0cf3-4fb0-9521-b24d88beaba5",
+              "name": "emergency",
+              "value": "={{$json.body.emergency}}",
+              "type": "string"
+            },
+            {
+              "id": "42fc091d-ae65-4e1e-ae1e-b7b2e6f131fe",
+              "name": "smsMessage",
+              "value": "={{ \"QuickFix HVAC Alert: New service request from \" + $json.body.customerName + \". \" + $json.body.serviceType + \" — \" + ($json.body.emergency ? \"Emergency\" : \"Routine\") + \". Check Google Sheets for details.\" }}",
+              "type": "string"
+            },
+            {
+              "id": "c8a0db94-1f19-4ede-bd38-447dfe64cd4c",
+              "name": "=smsStatus",
+              "value": "Not Sent - SMS provider not connected",
+              "type": "string"
             }
           ]
         },
@@ -76,7 +106,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        224,
+        -32,
         0
       ],
       "id": "d1b4fffb-8db5-46c9-b902-3508a02267b8",
@@ -109,7 +139,10 @@
             "Call Summary": "={{$json.callSummary}}",
             "Call Outcome": "={{$json.callOutcome}}",
             "Request Status": "={{$json.requestStatus}}",
-            "Source": "={{$json.source}}"
+            "Source": "={{$json.source}}",
+            "Service Type": "={{$json.serviceType}}",
+            "Issue": "={{$json.issue}}",
+            "Emergency": "={{$json.emergency}}"
           },
           "matchingColumns": [
             "Call History"
@@ -194,6 +227,36 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "Service Type",
+              "displayName": "Service Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Issue",
+              "displayName": "Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Emergency",
+              "displayName": "Emergency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -204,8 +267,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        448,
-        0
+        464,
+        -112
       ],
       "id": "9d044b71-6a92-4e43-906d-a510d9fa42de",
       "name": "Append row in sheet",
@@ -215,6 +278,111 @@
           "name": "Google Sheets account 3"
         }
       }
+    },
+    {
+      "parameters": {
+        "sendTo": "abdurrehmankhan383@gmail.com",
+        "subject": "QuickFix HVAC — New AI Call Summary",
+        "message": "=<h2>QuickFix HVAC — New AI Call Summary</h2>\n\n<p><strong>Customer Name:</strong> {{ $json[\"Customer Name\"] }}</p>\n<p><strong>Phone:</strong> {{ $json[\"Phone\"] }}</p>\n<p><strong>Service Type:</strong> {{ $json[\"Service Type\"] }}</p>\n<p><strong>Issue:</strong> {{ $json[\"Issue\"] }}</p>\n<p><strong>Emergency Status:</strong> {{ $json[\"Emergency\"] }}</p>\n<p><strong>Request Status:</strong> {{ $json[\"Request Status\"] }}</p>\n\n<p><strong>Call Summary:</strong><br>\n{{ $json[\"Call Summary\"] }}\n</p>\n\n<p><strong>Call ID:</strong> {{ $json[\"Call ID\"] }}</p>\n<p><strong>Date/Time:</strong> {{ $json[\"Date/Time\"] }}</p>\n<p><strong>Call Outcome:</strong> {{ $json[\"Call Outcome\"] }}</p>\n<p><strong>Source:</strong> {{ $json[\"Source\"] }}</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "92c5175a-b034-42cc-a46f-b6919794cee1",
+      "name": "Send Gmail Notification",
+      "webhookId": "eab59016-fef8-4823-a5eb-873decd9b5b5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "oRBqFbF9fgHizjqb",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const requiredFields = [\n  \"callId\",\n  \"dateTime\",\n  \"customerName\",\n  \"phone\",\n  \"callSummary\",\n  \"callOutcome\",\n  \"requestStatus\",\n  \"source\"\n];\n\nreturn $input.all().map(item => {\n  const data = item.json;\n\n  const missingFields = requiredFields.filter(field => {\n    return data[field] === null ||\n           data[field] === undefined ||\n           String(data[field]).trim() === \"\";\n  });\n\n  return {\n    json: {\n      ...data,\n      payloadValid: missingFields.length === 0,\n      missingFields: missingFields\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        0
+      ],
+      "id": "ba6c848b-d49a-4eb7-b093-c8d4c59ce202",
+      "name": "Validate Post-Call Payload"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "aaa7becc-9d44-497b-9fc9-4e18a0753d66",
+              "leftValue": "={{ $json.payloadValid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        0
+      ],
+      "id": "923fe53d-8806-49e9-9307-81efb42a7688",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17b7ef2f-88b4-4b98-b9c4-f3ef92b5566b",
+              "name": "success",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "825fd431-ad67-4068-a7ac-a0ce49d7e425",
+              "name": "message",
+              "value": "=Post-call payload rejected: required information is missing.",
+              "type": "string"
+            },
+            {
+              "id": "1e911896-3291-431d-bf08-f315a2945f00",
+              "name": "missingFields",
+              "value": "={{ $json.missingFields }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        96
+      ],
+      "id": "855b04cd-d526-4906-8371-69c7556c6022",
+      "name": "Prepare Validation Error"
     }
   ],
   "pinData": {},
@@ -234,7 +402,47 @@
       "main": [
         [
           {
+            "node": "Validate Post-Call Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send Gmail Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Post-Call Payload": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
             "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Validation Error",
             "type": "main",
             "index": 0
           }
@@ -247,7 +455,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "8bc896ca-1383-4855-a95a-349455502944",
+  "versionId": "452c9a10-2bf2-46bb-9057-a36389c9ff5c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "772b393f2bcb7ff468ac6bb463cce2f5ab4144599eab85dbb52a2a13876866dd"
