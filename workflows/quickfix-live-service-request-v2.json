@@ -11,10 +11,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -576,
-        -32
+        -864,
+        240
       ],
-      "id": "2c616d38-c96f-4728-9636-eebe99cbfdcc",
+      "id": "3d43ce1f-427b-406e-9938-da55f17d200b",
       "name": "Test Webhook",
       "webhookId": "b6f33606-fb3e-40e5-b78a-71e20fb2d9ec"
     },
@@ -25,7 +25,7 @@
             {
               "id": "c844e1a4-cd13-4375-8671-16612503323f",
               "name": "customerName",
-              "value": "=\n{{ $json.body.customerName }}",
+              "value": "=\n{{ $json.body.clientName }}",
               "type": "string"
             },
             {
@@ -83,10 +83,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        -400,
-        -32
+        -688,
+        240
       ],
-      "id": "cbbce51d-794f-48a0-96d6-d5d38c9c8a5a",
+      "id": "412f471b-f911-4c87-9f98-580a93bf8647",
       "name": "Edit Fields"
     },
     {
@@ -96,10 +96,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -240,
-        -32
+        -528,
+        240
       ],
-      "id": "9297aff5-cdc2-4ee0-99d9-a25301557327",
+      "id": "e008565a-7b1d-49c7-be03-8cf13747d030",
       "name": "Code in JavaScript"
     },
     {
@@ -131,25 +131,25 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -80,
-        -32
+        -368,
+        240
       ],
-      "id": "3f319937-6123-4ee6-83e3-32d7e3c97fb3",
+      "id": "e8b42e38-21de-41ce-9ed1-75766e94f458",
       "name": "If"
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={\n  \"success\": false,\n  \"message\": \"Sorry, we currently provide HVAC service only in our supported service areas.\"\n}",
+        "responseBody": "={{ {\n  \"success\": false,\n  \"status\": \"rejected\",\n  \"message\": \"We could not accept this service request. Please check the required information, confirm that the service address is within our supported service area, and provide any required emergency-fee consent.\"\n} }}",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        96,
-        16
+        -192,
+        288
       ],
-      "id": "14116b07-4af0-4e6e-8d83-e390d11c0498",
+      "id": "e61dd62e-46f3-4e94-a43e-13c299b69507",
       "name": "Respond to Webhook"
     },
     {
@@ -162,10 +162,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        96,
-        -160
+        -192,
+        112
       ],
-      "id": "f269210a-d5f4-4a78-be18-4fb7574fc2d1",
+      "id": "b3f3ba3c-90d8-498d-b897-29470ea79625",
       "name": "Switch"
     },
     {
@@ -275,10 +275,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        288,
-        -272
+        0,
+        0
       ],
-      "id": "83b3ce0e-c30b-44e3-8aea-859ff7409ea4",
+      "id": "7547f65e-f51c-40c5-b320-b1cedfe14af8",
       "name": "Prepare Emergency Request"
     },
     {
@@ -495,15 +495,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        448,
-        -272
+        160,
+        0
       ],
-      "id": "0c1079a1-7881-47ac-b4e5-965b29a81af3",
+      "id": "f3834208-03fe-4677-ac8c-caf1b82cf46a",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "946v28nA8bHJxEj2",
-          "name": "Google Sheets account 3"
+          "id": "4KB1AIwrneCLo4hd",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -516,10 +516,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        640,
-        -272
+        352,
+        0
       ],
-      "id": "a2f7ddcc-4cb7-4456-99e9-74232cf6a2dc",
+      "id": "2a7aaf5e-c780-41f7-b09f-c387401aef0c",
       "name": "Respond to Webhook1"
     },
     {
@@ -629,10 +629,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        336,
-        16
+        48,
+        288
       ],
-      "id": "4d20498e-bdee-462b-a9e0-9500a39b5acb",
+      "id": "d87c0dcf-4134-4352-8328-726c08c05089",
       "name": "Prepare Routine Request"
     },
     {
@@ -827,15 +827,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        528,
-        16
+        240,
+        288
       ],
-      "id": "d0d44f71-5390-46b9-96f6-ba4a24326f83",
+      "id": "669db856-bfe1-4089-9adc-199b70d843a4",
       "name": "Append row in sheet1",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "946v28nA8bHJxEj2",
-          "name": "Google Sheets account 3"
+          "id": "4KB1AIwrneCLo4hd",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -848,10 +848,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        704,
-        16
+        416,
+        288
       ],
-      "id": "e6cbd722-0f93-4b23-be1b-c9d3316955b1",
+      "id": "456b4902-d06c-4591-bbfe-d2a1285aae5a",
       "name": "Respond to Webhook2"
     }
   ],
@@ -971,17 +971,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "19a16509-cc15-4860-8a67-0e49657fbdf9",
+  "versionId": "fa122bcc-d1ad-43c1-8dd8-f677ac1d8aaf",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "772b393f2bcb7ff468ac6bb463cce2f5ab4144599eab85dbb52a2a13876866dd"
+    "instanceId": "b63214a402ed1482954a0650f2fbc62449eac5b53683f7b805b11a51d730f581"
   },
   "nodeGroups": [],
-  "id": "0r96tcyO8iGgX06h",
+  "id": "WjFW00COy7gHktBR",
   "tags": []
 }
