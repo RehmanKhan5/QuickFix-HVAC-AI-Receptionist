@@ -10,10 +10,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -208,
-        0
+        -688,
+        112
       ],
-      "id": "fa252f3a-e0c7-4316-827d-505a86c8bd15",
+      "id": "02876ffb-5c0c-4e75-bce2-62d49b40eb10",
       "name": "Webhook",
       "webhookId": "0b2af7d3-33aa-4f30-b5c9-f33e29b684b8"
     },
@@ -84,8 +84,8 @@
             {
               "id": "19179666-0cf3-4fb0-9521-b24d88beaba5",
               "name": "emergency",
-              "value": "={{$json.body.emergency}}",
-              "type": "string"
+              "value": "={{ $json.body.emergency === true || $json.body.emergency === \"true\" }}",
+              "type": "boolean"
             },
             {
               "id": "42fc091d-ae65-4e1e-ae1e-b7b2e6f131fe",
@@ -106,10 +106,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        -32,
-        0
+        -496,
+        112
       ],
-      "id": "d1b4fffb-8db5-46c9-b902-3508a02267b8",
+      "id": "be97f04b-f2d6-4f81-a999-6ce5f4fe869b",
       "name": "Edit Fields"
     },
     {
@@ -267,15 +267,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        464,
-        -112
+        0,
+        0
       ],
-      "id": "9d044b71-6a92-4e43-906d-a510d9fa42de",
+      "id": "e261f7ba-9fd4-4fa9-93c1-26452383753c",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "946v28nA8bHJxEj2",
-          "name": "Google Sheets account 3"
+          "id": "4KB1AIwrneCLo4hd",
+          "name": "Google Sheets account"
         }
       }
     },
@@ -289,15 +289,15 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        672,
-        0
+        208,
+        112
       ],
-      "id": "92c5175a-b034-42cc-a46f-b6919794cee1",
+      "id": "7a3c5ee8-1749-47fa-b4df-b795288f32a2",
       "name": "Send Gmail Notification",
       "webhookId": "eab59016-fef8-4823-a5eb-873decd9b5b5",
       "credentials": {
         "gmailOAuth2": {
-          "id": "oRBqFbF9fgHizjqb",
+          "id": "bEPV3OKEKcZ4NE2l",
           "name": "Gmail account"
         }
       }
@@ -309,10 +309,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        144,
-        0
+        -320,
+        112
       ],
-      "id": "ba6c848b-d49a-4eb7-b093-c8d4c59ce202",
+      "id": "56edf4e2-30c5-4531-86e6-1ced4d7c890c",
       "name": "Validate Post-Call Payload"
     },
     {
@@ -343,10 +343,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        320,
-        0
+        -144,
+        112
       ],
-      "id": "923fe53d-8806-49e9-9307-81efb42a7688",
+      "id": "cdf455ca-7e70-4692-9987-c5a4ed55ea67",
       "name": "If"
     },
     {
@@ -378,10 +378,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        448,
-        96
+        -16,
+        208
       ],
-      "id": "855b04cd-d526-4906-8371-69c7556c6022",
+      "id": "e7ca43c4-90bf-4233-a37e-86afcb3cf850",
       "name": "Prepare Validation Error"
     }
   ],
@@ -450,17 +450,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "452c9a10-2bf2-46bb-9057-a36389c9ff5c",
+  "versionId": "66a4fe7a-ee1e-4037-8684-d5a44d9dab9b",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "772b393f2bcb7ff468ac6bb463cce2f5ab4144599eab85dbb52a2a13876866dd"
+    "instanceId": "b63214a402ed1482954a0650f2fbc62449eac5b53683f7b805b11a51d730f581"
   },
   "nodeGroups": [],
-  "id": "BU4aLlArAbBpj9bW",
+  "id": "kDlSadv1fQeioOR7",
   "tags": []
 }
